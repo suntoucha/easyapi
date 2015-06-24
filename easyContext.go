@@ -9,6 +9,7 @@ import (
     "encoding/json"
     "reflect"
 	"io/ioutil"
+	"bytes"
 )
 
 
@@ -62,6 +63,12 @@ func(this *EasyContext) Process(w http.ResponseWriter, r *http.Request, controll
 				str = response.Response.(string)
 			default:
 				if raw, e = json.Marshal(response); e == nil {
+					//Marshal по умолчанию переводит символы <, > и & в коды
+					//А нам это не нужно — поэтому возвращаем их обратно
+					raw = bytes.Replace(raw, []byte("\\u003c"), []byte("<"), -1)
+        			raw = bytes.Replace(raw, []byte("\\u003e"), []byte(">"), -1)
+        			raw = bytes.Replace(raw, []byte("\\u0026"), []byte("&"), -1)					
+
 					str = string(raw)
 				}				
 		}
