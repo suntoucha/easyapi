@@ -1,25 +1,32 @@
 package easyapi
 
+const (
+	errStatus = "error"
+)
 
+//По гайдлайну лучше назвать APIError (GoLINT)
 
+//Ошибка, которую может отдать API
 type ApiError struct {
-	Status string `json:"status"`
-	Code string `json:"error_code,omitempty"`
-	Text string `json:"error_text,omitempty"`
+	Status  string `json:"status"`
+	Code    string `json:"error_code,omitempty"`
+	Text    string `json:"error_text,omitempty"`
 	Details string `json:"error_details,omitempty"`
 }
 
+//Для совместимости с стандартным error
+func (ae *ApiError) Error() string {
+	return ae.Code
+}
 
+//Создаем ошибку
+func NewError(code string, text string, details string) (err *ApiError) {
+	err = new(ApiError)
 
-func NewError(code string, text string, details string) (*ApiError) {
-	var (
-		e ApiError
-		)
+	err.Status = errStatus
+	err.Code = code
+	err.Text = text
+	err.Details = details
 
-	e.Status = "error"
-	e.Code = code
-	e.Text = text
-	e.Details = details
-
-	return &e
+	return err
 }
