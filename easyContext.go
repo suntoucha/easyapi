@@ -74,7 +74,6 @@ func(this *EasyContext) Process(w http.ResponseWriter, r *http.Request, controll
 		}
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	switch response.Response.(type) {
 		case string:
 
