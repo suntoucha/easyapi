@@ -41,15 +41,15 @@ func (this *EasyContext) Process(w http.ResponseWriter, r *http.Request, control
 		}
 	}
 	str = ""
-	if err != nil {
-		if raw, e = json.Marshal(err); e == nil {
-			str = string(raw)
-		}
-	} else {
-		switch response.Response.(type) {
-		case string:
-			str = response.Response.(string)
-		default:
+	switch response.Response.(type) {
+	case string:
+		str = response.Response.(string)
+	default:
+		if err != nil {
+			if raw, e = json.Marshal(err); e == nil {
+				str = string(raw)
+			}
+		} else {
 			if raw, e = json.Marshal(response); e == nil {
 				//Marshal по умолчанию переводит символы <, > и & в коды
 				//А нам это не нужно — поэтому возвращаем их обратно
