@@ -65,7 +65,7 @@ func (this *EasyContext) Process(w http.ResponseWriter, r *http.Request, control
 	default:
 		w.Header().Set("Content-Type", "application/json;charset=utf-8")
 	}
-	fmt.Fprintf(w, str)
+	fmt.Fprint(w, str)
 	this.finishTime()
 	this.log()
 }
