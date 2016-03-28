@@ -22,6 +22,12 @@ type ResponseHolder struct {
 	Response interface{} `json:"response"`
 }
 
+// completeResponse says to context to pass response from controller as is
+type completeResponse interface{}
+
+// CompleteResponse says to context to pass response from controller as is
+var CompleteResponse = new(completeResponse)
+
 func (this *EasyContext) Process(w http.ResponseWriter, r *http.Request, controller ControllerInterface) {
 	var (
 		err      *ApiError
@@ -42,6 +48,7 @@ func (this *EasyContext) Process(w http.ResponseWriter, r *http.Request, control
 	}
 	str = ""
 	switch response.Response.(type) {
+	case completeResponse:
 	case string:
 		str = response.Response.(string)
 	default:
@@ -61,6 +68,10 @@ func (this *EasyContext) Process(w http.ResponseWriter, r *http.Request, control
 		}
 	}
 	switch response.Response.(type) {
+	case completeResponse:
+		this.finishTime()
+		this.log()
+		return
 	case string:
 	default:
 		w.Header().Set("Content-Type", "application/json;charset=utf-8")
