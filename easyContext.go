@@ -49,6 +49,7 @@ func (this *EasyContext) Process(w http.ResponseWriter, r *http.Request, control
 	str = ""
 	switch response.Response.(type) {
 	case completeResponse:
+		fmt.Printf("completeResponse1 on request to %s", r.URL)
 	case string:
 		str = response.Response.(string)
 	default:
@@ -69,6 +70,7 @@ func (this *EasyContext) Process(w http.ResponseWriter, r *http.Request, control
 	}
 	switch response.Response.(type) {
 	case completeResponse:
+		fmt.Printf("completeResponse2 on request to %s", r.URL)
 		this.finishTime()
 		this.log()
 		return
