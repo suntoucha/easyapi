@@ -23,7 +23,7 @@ type ResponseHolder struct {
 }
 
 // completeResponse says to context to pass response from controller as is
-type completeResponse interface{}
+type completeResponse struct{}
 
 // CompleteResponse says to context to pass response from controller as is
 var CompleteResponse = new(completeResponse)
@@ -49,7 +49,6 @@ func (this *EasyContext) Process(w http.ResponseWriter, r *http.Request, control
 	str = ""
 	switch response.Response.(type) {
 	case completeResponse:
-		fmt.Printf("completeResponse1 on request to %s", r.URL)
 	case string:
 		str = response.Response.(string)
 	default:
@@ -70,7 +69,6 @@ func (this *EasyContext) Process(w http.ResponseWriter, r *http.Request, control
 	}
 	switch response.Response.(type) {
 	case completeResponse:
-		fmt.Printf("completeResponse2 on request to %s", r.URL)
 		this.finishTime()
 		this.log()
 		return
