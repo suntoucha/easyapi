@@ -26,7 +26,7 @@ type ResponseHolder struct {
 type completeResponse struct{}
 
 // CompleteResponse says to context to pass response from controller as is
-var CompleteResponse = new(completeResponse)
+var CompleteResponse = completeResponse{}
 
 func (this *EasyContext) Process(w http.ResponseWriter, r *http.Request, controller ControllerInterface) {
 	var (
