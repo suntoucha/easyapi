@@ -14,7 +14,7 @@ type EasyContext struct {
 	start, finish time.Time
 	duration      int
 	method        string
-	reqBody       []byte
+	ReqBody       []byte
 }
 
 type ResponseHolder struct {
@@ -92,12 +92,12 @@ func (this *EasyContext) finishTime() {
 
 func (this *EasyContext) readBody(r *http.Request, controller *ControllerInterface) *ApiError {
 	var e error
-	this.reqBody, e = ioutil.ReadAll(r.Body)
+	this.ReqBody, e = ioutil.ReadAll(r.Body)
 	if e != nil {
 		return NewError("server error", "Can't read request", e.Error())
 	}
-	if len(this.reqBody) > 0 {
-		e = json.Unmarshal(this.reqBody, controller)
+	if len(this.ReqBody) > 0 {
+		e = json.Unmarshal(this.ReqBody, controller)
 		if e != nil {
 			return NewError("wrong format", "Request body format is wrong", e.Error())
 		}
