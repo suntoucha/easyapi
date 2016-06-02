@@ -96,6 +96,7 @@ func (this *EasyContext) readBody(r *http.Request, controller *ControllerInterfa
 	if e != nil {
 		return NewError("server error", "Can't read request", e.Error())
 	}
+	*controller.SetRequestBody(this.reqBody)
 	if len(this.reqBody) > 0 {
 		e = json.Unmarshal(this.reqBody, controller)
 		if e != nil {
