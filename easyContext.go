@@ -40,7 +40,7 @@ func (this *EasyContext) Process(w http.ResponseWriter, r *http.Request, control
 	this.method = reflect.TypeOf(controller).String()
 	controller.SetRequest(r)
 	controller.SetResponse(&w)
-	if err = this.readBody(r, &controller); err == nil {
+	if err = this.readBody(r, controller); err == nil {
 		if err = controller.Validate(); err == nil {
 			response.Status = "ok"
 			response.Response, err = controller.Payload()
@@ -90,13 +90,13 @@ func (this *EasyContext) finishTime() {
 	this.duration = int(this.finish.Sub(this.start) / time.Millisecond)
 }
 
-func (this *EasyContext) readBody(r *http.Request, controller *ControllerInterface) *ApiError {
+func (this *EasyContext) readBody(r *http.Request, controller ControllerInterface) *ApiError {
 	var e error
 	this.reqBody, e = ioutil.ReadAll(r.Body)
 	if e != nil {
 		return NewError("server error", "Can't read request", e.Error())
 	}
-	*controller.SetRequestBody(this.reqBody)
+	controller.SetRequestBody(this.reqBody)
 	if len(this.reqBody) > 0 {
 		e = json.Unmarshal(this.reqBody, controller)
 		if e != nil {
